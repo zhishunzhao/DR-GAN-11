@@ -140,6 +140,8 @@ def Learn_D(D_model, loss_criterion, loss_criterion_gan, optimizer_D, batch_imag
     # id,真偽, pose それぞれのロスを計算
     batch_id_label = batch_id_label.long()
     batch_id_label = batch_id_label.cuda()
+    batch_pose_label = batch_pose_label.long()
+    batch_pose_label = batch_pose_label.cuda()
     L_id    = loss_criterion(real_output[:, :Nd], batch_id_label)
     L_gan   = loss_criterion_gan(real_output[:, Nd], batch_ones_label) + loss_criterion_gan(syn_output[:, Nd], batch_zeros_label)
     L_pose  = loss_criterion(real_output[:, Nd+1:], batch_pose_label)
