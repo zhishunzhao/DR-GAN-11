@@ -61,6 +61,10 @@ def train_single_DRGAN(images, id_labels, pose_labels, Nd, Np, Nz, D_model, G_mo
             batch_image = torch.FloatTensor(batch_data[0].float())
             batch_id_label = batch_data[1]
             batch_pose_label = batch_data[2]
+            batch_id_label = batch_id_label.long()
+            batch_id_label = batch_id_label.cuda()
+            batch_pose_label = batch_pose_label.long()
+            batch_pose_label = batch_pose_label.cuda()
             minibatch_size = len(batch_image)
 
             batch_ones_label = torch.ones(minibatch_size)   # 真偽判別用のラベル
@@ -138,10 +142,7 @@ def Learn_D(D_model, loss_criterion, loss_criterion_gan, optimizer_D, batch_imag
     syn_output = D_model(generated.detach()) # .detach() をすることで Generatorまでの逆伝播計算省略
 
     # id,真偽, pose それぞれのロスを計算
-    batch_id_label = batch_id_label.long()
-    batch_id_label = batch_id_label.cuda()
-    batch_pose_label = batch_pose_label.long()
-    batch_pose_label = batch_pose_label.cuda()
+
     L_id    = loss_criterion(real_output[:, :Nd], batch_id_label)
     L_gan   = loss_criterion_gan(real_output[:, Nd], batch_ones_label) + loss_criterion_gan(syn_output[:, Nd], batch_zeros_label)
     L_pose  = loss_criterion(real_output[:, Nd+1:], batch_pose_label)
