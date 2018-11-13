@@ -5,7 +5,7 @@ import torch
 import numpy as np
 # batch *
 def one_hot(batch, depth):
-    ones = torch.eye(depth)
+    ones = torch.sparse.torch.eye(depth)
     return ones.index_select(0,batch)
 
 if __name__ == '__main__':
