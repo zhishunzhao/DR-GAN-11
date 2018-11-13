@@ -14,4 +14,4 @@ if __name__ == '__main__':
     # print(a)
     tmp = torch.LongTensor(np.random.randint(13, size=6))
     pose_code = one_hot(tmp, 13)
-    print(pose_code)
+    print(pose_code.shape)
