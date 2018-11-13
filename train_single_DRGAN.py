@@ -138,7 +138,8 @@ def Learn_D(D_model, loss_criterion, loss_criterion_gan, optimizer_D, batch_imag
     syn_output = D_model(generated.detach()) # .detach() をすることで Generatorまでの逆伝播計算省略
 
     # id,真偽, pose それぞれのロスを計算
-    batch_id_label = torch.LongTensor(batch_id_label)
+    batch_id_label = batch_id_label.long()
+    batch_id_label = batch_id_label.cuda()
     L_id    = loss_criterion(real_output[:, :Nd], batch_id_label)
     L_gan   = loss_criterion_gan(real_output[:, Nd], batch_ones_label) + loss_criterion_gan(syn_output[:, Nd], batch_zeros_label)
     L_pose  = loss_criterion(real_output[:, Nd+1:], batch_pose_label)
