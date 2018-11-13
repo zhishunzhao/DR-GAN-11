@@ -45,8 +45,8 @@ def DataLoader(data_place):
     id_labels = np.load('{}/ids.npy'.format(data_place))
     pose_labels = np.load('{}/yaws.npy'.format(data_place))
 
-    Np = 5
-    Nd = 2
+    Np = 14
+    Nd = 18
 
     return [images, id_labels, pose_labels, Nd, Np, Nz, channel_num]
 
