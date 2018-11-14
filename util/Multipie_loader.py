@@ -101,11 +101,16 @@ if(__name__ == '__main__'):
     # im1 = transform(im1)
     # print(im1.shape)
     # print(im1[:,1, 1])
-    pose_dict = {'110': 1, '120': 2, '090': 3, '080': 4, '130': 5, '140': 6, '051': 7, '050': 8, '041': 9,
-                 '190': 10, '200': 11, '010': 12, '240': 13}
-    d = get_loader(image_dir=r'C:\Users\jason\Documents\GitHub\DR-GAN-1\data\session01', Np=13, Nd=200,
-                                    pose_dict=pose_dict, image_size=110, batch_size=8, mode='train',
-                                    num_workers=1)
-    for i, batch_data in enumerate(d):
-        image = torch.FloatTensor(batch_data[0].float())
-        print(image.size())
+    # pose_dict = {'110': 1, '120': 2, '090': 3, '080': 4, '130': 5, '140': 6, '051': 7, '050': 8, '041': 9,
+    #              '190': 10, '200': 11, '010': 12, '240': 13}
+    # d = get_loader(image_dir=r'C:\Users\jason\Documents\GitHub\DR-GAN-1\data\session01', Np=13, Nd=200,
+    #                                 pose_dict=pose_dict, image_size=110, batch_size=8, mode='train',
+    #                                 num_workers=1)
+    # for i, batch_data in enumerate(d):
+    #     image = torch.FloatTensor(batch_data[0].float())
+    #     print(image.size())
+    path = r'C:\Users\jason\Documents\GitHub\DR-GAN-1\data\session01\multiview'
+    dataset1 = ImageFolder(path, transform=None)
+    for names in dataset1.imgs:
+        print(names[0])
+
