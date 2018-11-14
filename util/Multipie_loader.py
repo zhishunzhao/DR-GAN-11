@@ -31,13 +31,13 @@ class MulPIE(data.Dataset):
         dataset1 = ImageFolder(self.image_dir, self.transform)
         for names in dataset1.imgs:
             # lable = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-            id_lable = np.zeros(self.Nd)
-            pose_lable = np.zeros(self.Np)
+            # id_lable = np.zeros(self.Nd)
+            # pose_lable = np.zeros(self.Np)
             name = names[0]
-            id_num = int(name.split('/')[-1][0:3])
-            pose_num = int(self.pose_dict.get(name.split('/')[-1].split('_')[3]))
-            id_lable[id_num] = 1
-            pose_lable[pose_num] = 1
+            id_lable = int(name.split('/')[-1][0:3])
+            pose_lable = int(self.pose_dict.get(name.split('/')[-1].split('_')[3]))
+            # id_lable[id_num] = 1
+            # pose_lable[pose_num] = 1
             # print(name)
             # print(id_lable)
             # print(pose_lable)
@@ -86,19 +86,26 @@ def get_loader(image_dir, Nd=200, Np=13, pose_dict={}, image_size=110, batch_siz
 
 
 if(__name__ == '__main__'):
-    im1 = Image.open('1.png')
-    transform = []
-    # if mode == 'train':
-    # transform.append(T.RandomHorizontalFlip())
-    # transform1.append(T.CenterCrop(178)) 以后会用到裁剪图像
-    # to run only once
-    transform.append(T.ToTensor())
-    transform.append(Resize((110, 110)))
-    transform.append(RandomCrop((96, 96)))
+    # im1 = Image.open('1.png')
+    # transform = []
+    # # if mode == 'train':
+    # # transform.append(T.RandomHorizontalFlip())
+    # # transform1.append(T.CenterCrop(178)) 以后会用到裁剪图像
+    # # to run only once
     # transform.append(T.ToTensor())
-    # transform.append(T.Normalize(mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5)))
-    transform = T.Compose(transform)
-    im1 = transform(im1)
-    print(im1.shape)
-    print(im1[:,1, 1])
-
+    # transform.append(Resize((110, 110)))
+    # transform.append(RandomCrop((96, 96)))
+    # # transform.append(T.ToTensor())
+    # # transform.append(T.Normalize(mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5)))
+    # transform = T.Compose(transform)
+    # im1 = transform(im1)
+    # print(im1.shape)
+    # print(im1[:,1, 1])
+    pose_dict = {'110': 1, '120': 2, '090': 3, '080': 4, '130': 5, '140': 6, '051': 7, '050': 8, '041': 9,
+                 '190': 10, '200': 11, '010': 12, '240': 13}
+    d = get_loader(image_dir=r'C:\Users\jason\Documents\GitHub\DR-GAN-1\data\session01', Np=13, Nd=200,
+                                    pose_dict=pose_dict, image_size=110, batch_size=8, mode='train',
+                                    num_workers=1)
+    for i, batch_data in enumerate(d):
+        image = torch.FloatTensor(batch_data[0].float())
+        print(image.size())
