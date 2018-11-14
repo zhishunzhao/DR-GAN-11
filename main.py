@@ -14,10 +14,11 @@ from util.create_randomdata import create_randomdata
 from train_single_DRGAN import train_single_DRGAN
 from train_multiple_DRGAN import train_multiple_DRGAN
 from Generate_Image import Generate_Image
+from util.Multipie_loader import get_loader
 import pdb
 
 
-def DataLoader(data_place):
+def DataLoader():
     """
     Define dataloder which is applicable to your data
     
@@ -41,14 +42,15 @@ def DataLoader(data_place):
     # mycase
     Nz = 50
     channel_num = 3
-    images = np.load('{}/images.npy'.format(data_place))
-    id_labels = np.load('{}/ids.npy'.format(data_place))
-    pose_labels = np.load('{}/yaws.npy'.format(data_place))
+    # images = np.load('{}/images.npy'.format(data_place))
+    # id_labels = np.load('{}/ids.npy'.format(data_place))
+    # pose_labels = np.load('{}/yaws.npy'.format(data_place))
+    Np = 13
+    Nd = 200
+    pose_dict = {'110':1, '120':2, '090':3, '080':4, '130':5, '140':6, '051':7, '050':8, '041':9, '190':10, '200':11, '010':12, '240':13}
+    dataloader = get_loader(image_dir='/home/manager/jason/DR-GAN-11/data/Session01',Np=13, Nd=200, pose_dict=pose_dict, image_size=110, batch_size=args.batch_size, mode='train', num_workers=1)
 
-    Np = 14
-    Nd = 18
-
-    return [images, id_labels, pose_labels, Nd, Np, Nz, channel_num]
+    return [dataloader, Nd, Np, Nz, channel_num]
 
 
 if __name__=="__main__":
@@ -97,7 +99,7 @@ if __name__=="__main__":
     else:
         print('n\Loading data from [%s]...' % args.data_place)
         try:
-            images, id_labels, pose_labels, Nd, Np, Nz, channel_num = DataLoader(args.data_place)
+            dataloader, Nd, Np, Nz, channel_num = DataLoader()
         except:
             print("Sorry, failed to load data")
 
@@ -124,7 +126,7 @@ if __name__=="__main__":
 
     if not(args.generate):
         if not(args.multi_DRGAN):
-            train_single_DRGAN(images, id_labels, pose_labels, Nd, Np, Nz, D, G, args)
+            train_single_DRGAN(dataloader, Nd, Np, Nz, D, G, args)
         else:
             if args.batch_size % args.images_perID == 0:
                 train_multiple_DRGAN(images, id_labels, pose_labels, Nd, Np, Nz, D, G, args)

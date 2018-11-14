@@ -19,10 +19,10 @@ from util.log_learning import log_learning
 from util.convert_image import convert_image
 from util.DataAugmentation import FaceIdPoseDataset, RandomCrop, Resize
 # from torchvision.transforms import CenterCrop, RandomCrop, ToTensor
+from util.Multipie_loader import get_loader
 
 
-
-def train_single_DRGAN(images, id_labels, pose_labels, Nd, Np, Nz, D_model, G_model, args):
+def train_single_DRGAN(dataloader, Nd, Np, Nz, D_model, G_model, args):
     if args.cuda:
         D_model.cuda()
         G_model.cuda()
@@ -34,8 +34,8 @@ def train_single_DRGAN(images, id_labels, pose_labels, Nd, Np, Nz, D_model, G_mo
     beta1_Adam = args.beta1
     beta2_Adam = args.beta2
 
-    image_size = images.shape[0]
-    epoch_time = np.ceil(image_size / args.batch_size).astype(int)
+    # image_size = images.shape[0]
+    # epoch_time = np.ceil(image_size / args.batch_size).astype(int)
 
     optimizer_D = optim.Adam(D_model.parameters(), lr = lr_Adam, betas=(beta1_Adam, beta2_Adam))
     optimizer_G = optim.Adam(G_model.parameters(), lr = lr_Adam, betas=(beta1_Adam, beta2_Adam))
@@ -50,9 +50,10 @@ def train_single_DRGAN(images, id_labels, pose_labels, Nd, Np, Nz, D_model, G_mo
 
         # Load augmented data
         # transforms.Compose([Resize((110,110)), RandomCrop((96,96))])
-        transformed_dataset = FaceIdPoseDataset(images, id_labels, pose_labels,
-                                        transform = transforms.Compose([Resize((110,110)), RandomCrop((96,96))]))
-        dataloader = DataLoader(transformed_dataset, batch_size = args.batch_size, shuffle=True)
+        # transformed_dataset = FaceIdPoseDataset(images, id_labels, pose_labels,
+        # transform = transforms.Compose([Resize((110,110)), RandomCrop((96,96))]))
+        # dataloader = get_loader(image_dir='', image_size=128, batch_size=args.batch_size, mode='train', num_workers=1)
+        dataloader = dataloader
 
         for i, batch_data in enumerate(dataloader):
             D_model.zero_grad()
