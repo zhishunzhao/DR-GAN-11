@@ -34,8 +34,8 @@ class MulPIE(data.Dataset):
             # id_lable = np.zeros(self.Nd)
             # pose_lable = np.zeros(self.Np)
             name = names[0]
-            id_lable = int(name.split('\\')[-1][0:3])
-            pose_lable = int(self.pose_dict.get(name.split('\\')[-1].split('_')[3]))
+            id_lable = int(name.split('/')[-1][0:3])
+            pose_lable = int(self.pose_dict.get(name.split('/')[-1].split('_')[3]))
             # id_lable[id_num] = 1
             # pose_lable[pose_num] = 1
             # print(name)
