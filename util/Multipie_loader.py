@@ -51,6 +51,7 @@ class MulPIE(data.Dataset):
         filename, id_label, pose_lable = dataset[index]
         # filename, label = dataset[index]
         image = Image.open(os.path.join(self.image_dir, filename))
+        # print(image.size)
         return self.transform(image), torch.FloatTensor(id_label), torch.FloatTensor(pose_lable)
         # return self.transform(image), torch.FloatTensor(label)
 
@@ -66,8 +67,9 @@ def get_loader(image_dir, Nd=200, Np=13, pose_dict={}, image_size=110, batch_siz
     # transform.append(T.RandomHorizontalFlip())
     # transform1.append(T.CenterCrop(178)) 以后会用到裁剪图像
     # to run only once
-    transform.append(Resize(image_size))
-    transform.append(RandomCrop(96))
+    transform.append(T.ToTensor())
+    transform.append(Resize((110, 110)))
+    transform.append(RandomCrop((96, 96)))
     # transform.append(T.ToTensor())
     # transform.append(T.Normalize(mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5)))
     transform = T.Compose(transform)
