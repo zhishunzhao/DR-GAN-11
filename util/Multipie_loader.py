@@ -34,8 +34,8 @@ class MulPIE(data.Dataset):
             # id_lable = np.zeros(self.Nd)
             # pose_lable = np.zeros(self.Np)
             name = names[0]
-            id_lable = int(name.split('/')[-1][0:3])
-            pose_lable = int(self.pose_dict.get(name.split('/')[-1].split('_')[3]))
+            id_lable = int(name.split('\\')[-1][0:3])
+            pose_lable = int(self.pose_dict.get(name.split('\\')[-1].split('_')[3]))
             # id_lable[id_num] = 1
             # pose_lable[pose_num] = 1
             # print(name)
@@ -55,7 +55,7 @@ class MulPIE(data.Dataset):
         # filename, label = dataset[index]
         image = Image.open(os.path.join(self.image_dir, filename))
         # print(image.size)
-        return self.transform(image), torch.FloatTensor(id_label), torch.FloatTensor(pose_lable)
+        return self.transform(image), id_label, pose_lable
         # return self.transform(image), torch.FloatTensor(label)
 
     def __len__(self):
