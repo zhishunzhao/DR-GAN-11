@@ -48,9 +48,9 @@ def DataLoader():
     Np = 13
     Nd = 200
     pose_dict = {'110':1, '120':2, '090':3, '080':4, '130':5, '140':6, '051':7, '050':8, '041':9, '190':10, '200':11, '010':12, '240':13}
-    dataloader = get_loader(image_dir='/home/manager/jason/DR-GAN-11/data/Session01',Np=13, Nd=200, pose_dict=pose_dict, image_size=110, batch_size=args.batch_size, mode='train', num_workers=1)
+    # dataloader = get_loader(image_dir='/home/manager/jason/DR-GAN-11/data/Session01',Np=13, Nd=200, pose_dict=pose_dict, image_size=110, batch_size=args.batch_size, mode='train', num_workers=1)
 
-    return [dataloader, Nd, Np, Nz, channel_num]
+    return [Nd, Np, Nz, channel_num]
 
 
 if __name__=="__main__":
@@ -99,7 +99,12 @@ if __name__=="__main__":
     else:
         print('n\Loading data from [%s]...' % args.data_place)
         try:
-            dataloader, Nd, Np, Nz, channel_num = DataLoader()
+            Nd, Np, Nz, channel_num = DataLoader()
+            pose_dict = {'110': 1, '120': 2, '090': 3, '080': 4, '130': 5, '140': 6, '051': 7, '050': 8, '041': 9,
+                         '190': 10, '200': 11, '010': 12, '240': 13}
+            dataloader = get_loader(image_dir='/home/manager/jason/DR-GAN-11/data/Session01', Np=13, Nd=200,
+                                    pose_dict=pose_dict, image_size=110, batch_size=args.batch_size, mode='train',
+                                    num_workers=1)
         except:
             print("Sorry, failed to load data")
 
