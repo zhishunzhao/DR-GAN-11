@@ -45,7 +45,7 @@ def DataLoader():
     # images = np.load('{}/images.npy'.format(data_place))
     # id_labels = np.load('{}/ids.npy'.format(data_place))
     # pose_labels = np.load('{}/yaws.npy'.format(data_place))
-    Np = 16
+    Np = 13
     Nd = 251
     pose_dict = {'110':1, '120':2, '090':3, '080':4, '130':5, '140':6, '051':7, '050':8, '041':9, '190':10, '200':11, '010':12, '240':13}
     # dataloader = get_loader(image_dir='/home/manager/jason/DR-GAN-11/data/Session01',Np=13, Nd=200, pose_dict=pose_dict, image_size=110, batch_size=args.batch_size, mode='train', num_workers=1)

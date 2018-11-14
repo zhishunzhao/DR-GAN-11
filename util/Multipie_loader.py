@@ -35,7 +35,7 @@ class MulPIE(data.Dataset):
             # pose_lable = np.zeros(self.Np)
             name = names[0]
             flag = int(name.split('/')[-1].split('_')[-1].split('.')[0])
-            if(flag == 6):
+            if(flag >= 6 and flag <= 10):
                 id_lable = int(name.split('/')[-1][0:3])
                 pose_lable = int(self.pose_dict.get(name.split('/')[-1].split('_')[3]))
                 # id_lable[id_num] = 1
