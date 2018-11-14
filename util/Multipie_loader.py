@@ -38,9 +38,9 @@ class MulPIE(data.Dataset):
             pose_num = int(self.pose_dict.get(name.split('/')[-1].split('_')[3]))
             id_lable[id_num] = 1
             pose_lable[pose_num] = 1
-            print(name)
-            print(id_lable)
-            print(pose_lable)
+            # print(name)
+            # print(id_lable)
+            # print(pose_lable)
 
             # label_trg = [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
             self.train_dataset.append([name, id_lable, pose_lable])
