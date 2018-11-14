@@ -34,17 +34,19 @@ class MulPIE(data.Dataset):
             # id_lable = np.zeros(self.Nd)
             # pose_lable = np.zeros(self.Np)
             name = names[0]
-            id_lable = int(name.split('/')[-1][0:3])
-            pose_lable = int(self.pose_dict.get(name.split('/')[-1].split('_')[3]))
-            # id_lable[id_num] = 1
-            # pose_lable[pose_num] = 1
-            # print(name)
-            # print(id_lable)
-            # print(pose_lable)
+            flag = (name.split('/')[-1].split('_')[-1].split('.')[0])
+            if(flag >= 6 and flag <= 10):
+                id_lable = int(name.split('/')[-1][0:3])
+                pose_lable = int(self.pose_dict.get(name.split('/')[-1].split('_')[3]))
+                # id_lable[id_num] = 1
+                # pose_lable[pose_num] = 1
+                # print(name)
+                # print(id_lable)
+                # print(pose_lable)
 
-            # label_trg = [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-            self.train_dataset.append([name, id_lable, pose_lable])
-            self.test_dataset.append([name, id_lable, pose_lable])
+                # label_trg = [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+                self.train_dataset.append([name, id_lable, pose_lable])
+                self.test_dataset.append([name, id_lable, pose_lable])
 
         # 该方法是继承torch里面的utils文件夹里面data文件夹里面的Dataset类
 
