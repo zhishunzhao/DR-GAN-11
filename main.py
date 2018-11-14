@@ -105,6 +105,7 @@ if __name__=="__main__":
             dataloader = get_loader(image_dir='/home/manager/jason/DR-GAN-11/data/Session01', Np=13, Nd=200,
                                     pose_dict=pose_dict, image_size=110, batch_size=args.batch_size, mode='train',
                                     num_workers=1)
+            print('test')
         except:
             print("Sorry, failed to load data")
 
