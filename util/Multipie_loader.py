@@ -38,6 +38,9 @@ class MulPIE(data.Dataset):
             pose_num = int(self.pose_dict.get(name.split('/')[-1].split('_')[3]))
             id_lable[id_num] = 1
             pose_lable[pose_num] = 1
+            print(name)
+            print(id_lable)
+            print(pose_lable)
 
             # label_trg = [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
             self.train_dataset.append([name, id_lable, pose_lable])
@@ -80,3 +83,22 @@ def get_loader(image_dir, Nd=200, Np=13, pose_dict={}, image_size=110, batch_siz
     data_loader = data.DataLoader(dataset=dataset, batch_size=batch_size, shuffle=(mode == 'train'),
                                   num_workers=num_workers)
     return data_loader
+
+
+if(__name__ == '__main__'):
+    im1 = Image.open('1.png')
+    transform = []
+    # if mode == 'train':
+    # transform.append(T.RandomHorizontalFlip())
+    # transform1.append(T.CenterCrop(178)) 以后会用到裁剪图像
+    # to run only once
+    transform.append(T.ToTensor())
+    transform.append(Resize((110, 110)))
+    transform.append(RandomCrop((96, 96)))
+    # transform.append(T.ToTensor())
+    # transform.append(T.Normalize(mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5)))
+    transform = T.Compose(transform)
+    im1 = transform(im1)
+    print(im1.shape)
+    print(im1[:,1, 1])
+

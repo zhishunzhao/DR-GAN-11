@@ -60,6 +60,7 @@ def train_single_DRGAN(dataloader, Nd, Np, Nz, D_model, G_model, args):
             G_model.zero_grad()
 
             batch_image = torch.FloatTensor(batch_data[0].float())
+            print(batch_image)
             batch_id_label = batch_data[1]
             batch_pose_label = batch_data[2]
             batch_id_label = batch_id_label.long()
