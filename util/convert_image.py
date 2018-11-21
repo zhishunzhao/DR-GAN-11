@@ -10,7 +10,11 @@ def convert_image(data):
         img = data.transpose(0, 2, 3, 1)
         # img = img / 2.0
 <<<<<<< HEAD
+<<<<<<< HEAD
         img = data * 255.
+=======
+        img = img * 255.
+>>>>>>> parent of 676bb08... change image format
         # img = img[:,:,:,[2,1,0]]
 =======
         img = img * 255.
@@ -21,7 +25,11 @@ def convert_image(data):
         img = data.transpose(1, 2, 0)
         # img = img / 2.0
 <<<<<<< HEAD
+<<<<<<< HEAD
         img = data * 255.
+=======
+        img = img * 255.
+>>>>>>> parent of 676bb08... change image format
         # img = img[:,:,[2,1,0]]
 =======
         img = img * 255.
