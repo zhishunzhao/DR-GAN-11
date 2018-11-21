@@ -133,8 +133,8 @@ def train_single_DRGAN(dataloader, Nd, Np, Nz, D_model, G_model, args):
             torch.save(G_model, save_path_G)
             # 最後のエポックの学習前に生成した画像を１枚保存（学習の確認用）
             save_generated_image = convert_image(generated[0].cpu().data.numpy())
-            print('generated_image shape: ', save_generated_image.shape)
-            save_path_image = os.path.join(args.save_dir, 'epoch{}_generatedimage.png'.format(epoch))
+            # print('generated_image shape: ', save_generated_image.shape)
+            save_path_image = os.path.join(args.save_dir, 'epoch{}_generatedimage.jpg'.format(epoch))
             misc.imsave(save_path_image, save_generated_image.astype(np.uint8))
 
 
