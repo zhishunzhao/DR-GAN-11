@@ -59,11 +59,10 @@ def train_single_DRGAN(dataloader, Nd, Np, Nz, D_model, G_model, args):
             D_model.zero_grad()
             G_model.zero_grad()
 
-            # Size: Batch * channel * 96 * 96
             batch_image = torch.FloatTensor(batch_data[0].float())
+            # print(batch_image.size)
             batch_id_label = batch_data[1]
             batch_pose_label = batch_data[2]
-            # 下面4行有点问题
             batch_id_label = batch_id_label.long()
             batch_id_label = batch_id_label.cuda()
             batch_pose_label = batch_pose_label.long()
