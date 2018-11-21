@@ -7,13 +7,13 @@ import numpy as np
 
 def convert_image(data):
     if len(data.shape)==4:
-        # img = data.transpose(0, 2, 3, 1)
+        img = data.transpose(0, 2, 3, 1)
         # img = img / 2.0
         img = data * 255.
         # img = img[:,:,:,[2,1,0]]
 
     else:
-        # img = data.transpose(1, 2, 0)
+        img = data.transpose(1, 2, 0)
         # img = img / 2.0
         img = data * 255.
         # img = img[:,:,[2,1,0]]

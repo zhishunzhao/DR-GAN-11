@@ -6,3 +6,6 @@ Image_check.ipynb
 /cfp-snapshot
 /data
 /ipython_notebook
+*.xml
+.idea/workspace.xml
+.idea/workspace.xml
