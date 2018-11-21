@@ -13,7 +13,7 @@ def convert_image(data):
         # img = img[:,:,:,[2,1,0]]
 
     else:
-        # img = data.transpose(1, 2, 0)
+        img = data.transpose(1, 2, 0)
         # img = img / 2.0
         img = data * 255.
         # img = img[:,:,[2,1,0]]
