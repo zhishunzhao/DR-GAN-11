@@ -36,7 +36,7 @@ class MulPIE(data.Dataset):
             name = names[0]
             image_num = int(name.split('/')[-1].split('_')[-1].split('.')[0])
             pose_lable = name.split('/')[-1].split('_')[3]
-            if(image_num >= 6 and image_num <= 10 and (pose_lable != '081' or pose_lable != '191')):
+            if(image_num >= 6 and image_num <= 10 and (pose_lable != '081' and pose_lable != '191')):
                 id_lable = int(name.split('/')[-1][0:3])
                 pose_lable = self.pose_dict.get(pose_lable)
                 # id_lable[id_num] = 1
