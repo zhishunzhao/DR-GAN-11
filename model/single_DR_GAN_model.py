@@ -265,7 +265,7 @@ class Generator(nn.Module):
 
         self.G_dec_convLayers = nn.Sequential(*G_dec_convLayers)
 
-        self.G_dec_fc = nn.Linear(384+Np+Nz, 320*6*6)
+        self.G_dec_fc = nn.Linear(384+Np+Nz, 384*6*6)
 
         # 重みは全て N(0, 0.02) で初期化
         for m in self.modules():
