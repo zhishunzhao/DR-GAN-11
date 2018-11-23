@@ -21,17 +21,17 @@ class Discriminator(nn.Module):
     def __init__(self, Nd, Np, channel_num):
         super(Discriminator, self).__init__()
         convLayers = [
-            nn.Conv2d(channel_num, 32, 3, 1, 1, bias=False), # Bxchx96x96 -> Bx32x96x96
+            nn.Conv2d(channel_num, 32, 3, 1, 1, bias=False), # Bxchx192x192 -> Bx32x192x192
             nn.BatchNorm2d(32),
             nn.ELU(),
-            nn.Conv2d(32, 64, 3, 1, 1, bias=False), # Bx32x96x96 -> Bx64x96x96
+            nn.Conv2d(32, 64, 3, 1, 1, bias=False), # Bx32x192x192 -> Bx64x192x192
             nn.BatchNorm2d(64),
             nn.ELU(),
-            nn.ZeroPad2d((0, 1, 0, 1)),                      # Bx64x96x96 -> Bx64x97x97
-            nn.Conv2d(64, 64, 3, 2, 0, bias=False), # Bx64x97x97 -> Bx64x48x48
+            nn.ZeroPad2d((0, 1, 0, 1)),                      # Bx64x192x192 -> Bx64x193x193
+            nn.Conv2d(64, 64, 3, 2, 0, bias=False), # Bx64x193x193 -> Bx64x96x96
             nn.BatchNorm2d(64),
             nn.ELU(),
-            nn.Conv2d(64, 64, 3, 1, 1, bias=False), # Bx64x48x48 -> Bx64x48x48
+            nn.Conv2d(64, 64, 3, 1, 1, bias=False), # Bx64x96x96 -> Bx64x96x96
             nn.BatchNorm2d(64),
             nn.ELU(),
             nn.Conv2d(64, 128, 3, 1, 1, bias=False), # Bx64x48x48 -> Bx128x48x48
@@ -67,11 +67,22 @@ class Discriminator(nn.Module):
             nn.Conv2d(160, 320, 3, 1, 1, bias=False), # Bx160x6x6 -> Bx320x6x6
             nn.BatchNorm2d(320),
             nn.ELU(),
+            nn.ZeroPad2d((0, 1, 0, 1)),
+            nn.Conv2d(320, 320, 3, 2, 0, bias=False),  # Bx160x6x6 -> Bx320x6x6
+            nn.BatchNorm2d(320),
+            nn.ELU(),
+            nn.Conv2d(320, 192, 3, 1, 1, bias=False),  # Bx256x6x6 -> Bx160x6x6
+            nn.BatchNorm2d(192),
+            nn.ELU(),
+            nn.Conv2d(192, 384, 3, 1, 1, bias=False),  # Bx160x6x6 -> Bx320x6x6
+            nn.BatchNorm2d(384),
+            nn.ELU(),
+
             nn.AvgPool2d(6, stride=1), #  Bx320x6x6 -> Bx320x1x1
         ]
 
         self.convLayers = nn.Sequential(*convLayers)
-        self.fc = nn.Linear(320, Nd+1+Np)
+        self.fc = nn.Linear(384, Nd+1+Np)
 
         # 重みは全て N(0, 0.02) で初期化
         for m in self.modules():
@@ -85,7 +96,7 @@ class Discriminator(nn.Module):
         # 畳み込み -> 平均プーリングの結果 B x 320 x 1 x 1の出力を得る
         x = self.convLayers(input)
 
-        x = x.view(-1, 320)
+        x = x.view(-1, 384)
 
         # 全結合
         x = self.fc(x) # Bx320 -> B x (Nd+1+Np)
@@ -181,13 +192,24 @@ class Generator(nn.Module):
             nn.Conv2d(160, 320, 3, 1, 1, bias=False), # Bx160x6x6 -> Bx320x6x6
             nn.BatchNorm2d(320),
             nn.ELU(),
+            nn.ZeroPad2d((0, 1, 0, 1)),
+            nn.Conv2d(320, 320, 3, 2, 0, bias=False),  # Bx160x6x6 -> Bx320x6x6
+            nn.BatchNorm2d(320),
+            nn.ELU(),
+            nn.Conv2d(320, 192, 3, 1, 1, bias=False),  # Bx256x6x6 -> Bx160x6x6
+            nn.BatchNorm2d(192),
+            nn.ELU(),
+            nn.Conv2d(192, 384, 3, 1, 1, bias=False),  # Bx160x6x6 -> Bx320x6x6
+            nn.BatchNorm2d(384),
+            nn.ELU(),
             nn.AvgPool2d(6, stride=1), #  Bx320x6x6 -> Bx320x1x1
 
         ]
         self.G_enc_convLayers = nn.Sequential(*G_enc_convLayers)
 
         G_dec_convLayers = [
-            nn.ConvTranspose2d(320,160, 3,1,1, bias=False), # Bx320x6x6 -> Bx160x6x6
+
+            nn.ConvTranspose2d(384,160, 3,1,1, bias=False), # Bx320x6x6 -> Bx160x6x6
             nn.BatchNorm2d(160),
             nn.ELU(),
             nn.ConvTranspose2d(160, 256, 3,1,1, bias=False), # Bx160x6x6 -> Bx256x6x6
@@ -230,13 +252,20 @@ class Generator(nn.Module):
             nn.ConvTranspose2d(64, 32,  3,1,1, bias=False), # Bx64x96x96 -> Bx32x96x96
             nn.BatchNorm2d(32),
             nn.ELU(),
+            nn.ConvTranspose2d(32, 32, 3, 1, 1, bias=False),  # Bx32x96x96 -> Bx32x96x96
+            nn.BatchNorm2d(32),
+            nn.ELU(),
+            nn.ConvTranspose2d(32, 32, 3, 2, 0, bias=False),  # Bx32x96x96 -> Bx32x193x193
+            nn.BatchNorm2d(32),
+            nn.ELU(),
+            Crop([0, 1, 0, 1]),
             nn.ConvTranspose2d(32, channel_num,  3,1,1, bias=False), # Bx32x96x96 -> Bxchx96x96
             nn.Tanh(),
         ]
 
         self.G_dec_convLayers = nn.Sequential(*G_dec_convLayers)
 
-        self.G_dec_fc = nn.Linear(320+Np+Nz, 320*6*6)
+        self.G_dec_fc = nn.Linear(384+Np+Nz, 320*6*6)
 
         # 重みは全て N(0, 0.02) で初期化
         for m in self.modules():
@@ -255,7 +284,7 @@ class Generator(nn.Module):
 
         x = self.G_enc_convLayers(input) # Bxchx96x96 -> Bx320x1x1
 
-        x = x.view(-1,320)
+        x = x.view(-1,384)
 
         self.features = x
 
@@ -265,7 +294,7 @@ class Generator(nn.Module):
 
         x = self.G_dec_fc(x) # B x (320+Np+Nz) -> B x (320x6x6)
 
-        x = x.view(-1, 320, 6, 6) # B x (320x6x6) -> B x 320 x 6 x 6
+        x = x.view(-1, 384, 6, 6) # B x (320x6x6) -> B x 320 x 6 x 6
 
         x = self.G_dec_convLayers(x) #  B x 320 x 6 x 6 -> Bxchx96x96
 

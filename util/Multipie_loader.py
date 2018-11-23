@@ -73,8 +73,8 @@ def get_loader(image_dir, Nd=200, Np=13, pose_dict={}, image_size=110, batch_siz
     # transform.append(T.RandomHorizontalFlip())
     # transform1.append(T.CenterCrop(178)) 以后会用到裁剪图像
     # to run only once
-    transform.append(T.Resize(120))
-    transform.append(T.CenterCrop(96))
+    transform.append(T.Resize(240))
+    transform.append(T.CenterCrop(192))
     # transform.append(RandomCrop((96, 96)))
     transform.append(T.ToTensor())
 
