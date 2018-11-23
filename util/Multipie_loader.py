@@ -35,10 +35,10 @@ class MulPIE(data.Dataset):
             # pose_lable = np.zeros(self.Np)
             name = names[0]
             image_num = int(name.split('/')[-1].split('_')[-1].split('.')[0])
-            pose_num = int(name.split('/')[-1].split('_')[-2])
-            if(image_num >= 6 and image_num <= 10 and (pose_num != 81 or pose_num != 191)):
+            pose_lable = int(name.split('/')[-1].split('_')[3])
+            if(image_num >= 6 and image_num <= 10 and (pose_lable != 81 or pose_lable != 191)):
                 id_lable = int(name.split('/')[-1][0:3])
-                pose_lable = int(self.pose_dict.get(name.split('/')[-1].split('_')[-2]))
+                # pose_lable = int(self.pose_dict.get(name.split('/')[-1].split('_')[-2]))
                 # id_lable[id_num] = 1
                 # pose_lable[pose_num] = 1
                 # print(name)
