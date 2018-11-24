@@ -26,6 +26,7 @@ def Generate_Image(test_dir, pose_code, Nz, G_model, args):
     for root, dirs, files in os.walk(test_dir):
         for f in files:
             im = Image.open(f)
+            f = os.path.join(test_dir, f)
             im_data = T.ToTensor(im)
             generated = G_model(im_data, pose_code, fixed_noise)
             save_generated_image = generated.cpu().data_numpy().transpose(1, 2, 0)
