@@ -48,16 +48,21 @@ def Generate_Image(image_folder,Nz, Np, G_model, args):
         im = T.ToTensor()(im).unsqueeze(0)
         im = im.cuda()
         im = Variable(im)
-        generated = G_model(im, pose_code, fixed_noise)
-        save_generated_image = generated.cpu().data.numpy().transpose(0, 2, 3, 1)
-        # 不清楚是否必要
-        save_generated_image = np.squeeze(save_generated_image)
-        save_generated_image = save_generated_image * 255.0
-        save_dir = '/home/home_data/jason/DR-GAN-11/test_output'
-        filename = os.path.join(save_dir, '{}.jpg'.format(str(image_number)))
-        if not os.path.isdir(save_dir): os.makedirs(save_dir)
-        print('saving {}'.format(filename))
-        misc.imsave(filename, save_generated_image.astype(np.uint8))
+        for i in range(Np):
+            pose_code = torch.zeros((1, Np))
+            pose_code[0][i] = 1
+            pose_code = Variable(pose_code)
+            pose_code = pose_code.cuda()
+            generated = G_model(im, pose_code, fixed_noise)
+            save_generated_image = generated.cpu().data.numpy().transpose(0, 2, 3, 1)
+            # 不清楚是否必要
+            save_generated_image = np.squeeze(save_generated_image)
+            save_generated_image = save_generated_image * 255.0
+            save_dir = '/home/home_data/jason/DR-GAN-11/test_output'
+            filename = os.path.join(save_dir, '{}.jpg'.format(str(image_number)))
+            if not os.path.isdir(save_dir): os.makedirs(save_dir)
+            print('saving {}'.format(filename))
+            misc.imsave(filename, save_generated_image.astype(np.uint8))
 
         image_number += 1
 
