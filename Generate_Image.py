@@ -49,7 +49,7 @@ def Generate_Image(image_folder,Nz, Np, G_model, args):
         im = im.cuda()
         im = Variable(im)
         generated = G_model(im, pose_code, fixed_noise)
-        save_generated_image = generated.cpu().data.numpy().transpose(1, 2, 0)
+        save_generated_image = generated.cpu().data.numpy().transpose(0, 2, 3, 1)
         # 不清楚是否必要
         save_generated_image = np.squeeze(save_generated_image)
         save_generated_image = save_generated_image * 255.0
