@@ -64,5 +64,5 @@ def Generate_Image(image_folder,Nz, Np, G_model, args):
             print('saving {}'.format(filename))
             misc.imsave(filename, save_generated_image.astype(np.uint8))
 
-        image_number += 1
+            image_number += 1
 
