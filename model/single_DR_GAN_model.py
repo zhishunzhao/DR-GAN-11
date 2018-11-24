@@ -253,7 +253,8 @@ class Generator(nn.Module):
 
         self.features = x
 
-        x = torch.cat([x, pose, noise], 1)  # Bx320 -> B x (320+Np+Nz)
+        x = torch.cat([x, pose], 1)  # Bx320 -> B x (320+Np+Nz)
+        x = torch.cat([x, noise], 1)  # Bx320 -> B x (320+Np+Nz)
 
         x = self.G_dec_fc(x) # B x (320+Np+Nz) -> B x (320x6x6)
 
