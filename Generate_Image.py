@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+ #!/usr/bin/env python
 # encoding: utf-8
 
 import os
@@ -12,7 +12,7 @@ import torch
 from torch import nn, optim
 from torch.autograd import Variable
 
-def Generate_Image(images, pose_code, Nz, G_model, args):
+def Generate_Image(dataloader, pose_code, Nz, G_model, args):
     """
     Generate_Image with learned Generator
 
@@ -33,18 +33,27 @@ def Generate_Image(images, pose_code, Nz, G_model, args):
 
     G_model.eval()
 
-    image_size = images.shape[0]
-    epoch_time = np.ceil(image_size / args.batch_size).astype(int)
+    # image_size = images.shape[0]
+    # epoch_time = np.ceil(image_size / args.batch_size).astype(int)
     features = []
     image_number = 1
 
     if not(args.multi_DRGAN):
 
-        for i in range(epoch_time):
-            start = i*args.batch_size
-            end = start + args.batch_size
-            batch_image = torch.FloatTensor(images[start:end])
-            batch_pose_code = torch.FloatTensor(pose_code[start:end]) # Condition 付に使用
+        for i, batch_data in enumerate(dataloader):
+            # start = i*args.batch_size
+            # end = start + args.batch_size
+            # batch_image = torch.FloatTensor(images[start:end])
+            # batch_pose_code = torch.FloatTensor(pose_code[start:end]) # Condition 付に使用
+            # minibatch_size = len(batch_image)
+            batch_image = torch.FloatTensor(batch_data[0].float())
+            # print(batch_image.size)
+            batch_id_label = batch_data[1]
+            batch_pose_label = batch_data[2]
+            batch_id_label = batch_id_label.long()
+            batch_id_label = batch_id_label.cuda()
+            batch_pose_label = batch_pose_label.long()
+            batch_pose_label = batch_pose_label.cuda()
             minibatch_size = len(batch_image)
 
             fixed_noise = torch.FloatTensor(np.random.uniform(-1,1, (minibatch_size, Nz)))
