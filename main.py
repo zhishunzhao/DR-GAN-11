@@ -145,4 +145,4 @@ if __name__=="__main__":
         # pose_code = np.random.uniform(-1,1, (images.shape[0], Np))
         pose_code = [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0]
         pose_code = torch.FloatTensor(pose_code)
-        Generate_Image(args.test-dir, pose_code, Nz, G, args)
+        Generate_Image('./test', pose_code, Nz, G, args)
