@@ -32,6 +32,7 @@ def Generate_Image(test_dir, pose_code, Nz, G_model, args):
 
             totensor = T.ToTensor()
             im_data = totensor(im).unsqueeze(0)
+            print(im_data.shape)
             im_data = Variable(im_data)
             im_data = im_data.cuda()
             # im_data = np.expand_dims(im_data, axis=0)
