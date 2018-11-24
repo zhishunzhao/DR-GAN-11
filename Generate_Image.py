@@ -85,7 +85,7 @@ def Generate_Image(dataloader,Nz, G_model, args):
 
                 image_number += 1
 
-        features = torch.cat(features)
+        # features = torch.cat(features)
 
     else:
 
