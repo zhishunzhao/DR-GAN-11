@@ -36,7 +36,7 @@ def Generate_Image(image_folder,Nz, Np, G_model, args):
     folder = image_folder
     os.chdir(folder)
     pose_code = torch.zeros((1, Np))
-    pose_code[5] = 1
+    pose_code[0][5] = 1
     pose_code = Variable(pose_code)
     pose_code = pose_code.cuda()
     fixed_noise = torch.FloatTensor(np.random.uniform(-1, 1, (1, Nz)))
