@@ -102,9 +102,9 @@ if __name__=="__main__":
         print('n\Loading data from [%s]...' % args.data_place)
 
         Nd, Np, Nz, channel_num = DataLoader()
-        pose_dict = POSE_DICT
-        dataloader = get_loader(image_dir='/home/home_data/jason/DR-GAN-11/test', Np=13, Nd=250,pose_dict=pose_dict, image_size=110, batch_size=args.batch_size, mode='train',
-                                num_workers=1)
+        # pose_dict = POSE_DICT
+        # dataloader = get_loader(image_dir='/home/home_data/jason/DR-GAN-11/test', Np=13, Nd=250,pose_dict=pose_dict, image_size=110, batch_size=args.batch_size, mode='train',
+                                # num_workers=1)
         # print('test')
         # except:
             # print("Sorry, failed to load data")
