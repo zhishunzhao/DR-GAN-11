@@ -28,7 +28,8 @@ def Generate_Image(test_dir, pose_code, Nz, G_model, args):
 
             file1 = os.path.join(test_dir, f)
             im = Image.open(file1)
-            im_data = T.ToTensor(im)
+            totensor = T.ToTensor()
+            im_data = totensor(im)
             generated = G_model(im_data, pose_code, fixed_noise)
             save_generated_image = generated.cpu().data_numpy().transpose(1, 2, 0)
             # 不清楚是否必要
