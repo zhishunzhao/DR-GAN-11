@@ -29,6 +29,7 @@ def Generate_Image(test_dir, pose_code, Nz, G_model, args):
             file1 = os.path.join(test_dir, f)
             im = Image.open(file1)
             im = np.expand_dims(im, axis=0)
+            im = Image.fromarray(np.uint8(im))
             totensor = T.ToTensor()
             im_data = totensor(im)
 
