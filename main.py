@@ -144,5 +144,5 @@ if __name__=="__main__":
         # pose_code = [] # specify arbitrary pose code for every image
         # pose_code = np.random.uniform(-1,1, (images.shape[0], Np))
         pose_code = [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0]
-        pose_code = torch.Floattensor(pose_code)
+        pose_code = torch.FloatTensor(pose_code)
         Generate_Image(args.test-dir, pose_code, Nz, G, args)
