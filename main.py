@@ -13,7 +13,7 @@ from model import multiple_DR_GAN_model as multi_model
 from util.create_randomdata import create_randomdata
 from train_single_DRGAN import train_single_DRGAN
 from train_multiple_DRGAN import train_multiple_DRGAN
-from Generate_Image_v2 import Generate_Image
+from Generate_Image import Generate_Image
 from util.Multipie_loader import get_loader
 import pdb
 
@@ -74,7 +74,7 @@ if __name__=="__main__":
     # option
     parser.add_argument('-snapshot', type=str, default=None, help='filename of model snapshot(snapshot/{Single or Multiple}/{date}/{epoch}) [default: None]')
     parser.add_argument('-generate', action='store_true', default=None, help='Generate pose modified image from given image')
-    parser.add_argument('-test-dir', type=str, default='./test', help='test_dir')
+    parser.add_argument('-testop', type=str, default='./test', help='test_dir')
 
     args = parser.parse_args()
 
@@ -104,7 +104,7 @@ if __name__=="__main__":
         pose_dict = {'110': 1, '120': 2, '090': 3, '080': 4, '130': 5, '140': 6, '051': 7, '050': 8, '041': 9,
                          '190': 10, '200': 11, '010': 12, '240': 13}
 
-        dataloader = get_loader(image_dir='/home/home_data/Multi-Pie/data/session01/multiview', Np=13, Nd=250,pose_dict=pose_dict, image_size=110, batch_size=args.batch_size, mode='train',
+        dataloader = get_loader(image_dir='/home/home_data/jason/DR-GAN-11/test', Np=13, Nd=250,pose_dict=pose_dict, image_size=110, batch_size=args.batch_size, mode='train',
                                 num_workers=4)
         # print('test')
         # except:
@@ -143,6 +143,6 @@ if __name__=="__main__":
     else:
         # pose_code = [] # specify arbitrary pose code for every image
         # pose_code = np.random.uniform(-1,1, (images.shape[0], Np))
-        pose_code = [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0]
-        pose_code = torch.FloatTensor(pose_code)
-        Generate_Image('./test', pose_code, Nz, G, args)
+        # pose_code = [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0]
+        # pose_code = torch.FloatTensor(pose_code)
+        Generate_Image(dataloader, Nz, G, args)

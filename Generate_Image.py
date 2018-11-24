@@ -11,8 +11,9 @@ import matplotlib.pyplot as plt
 import torch
 from torch import nn, optim
 from torch.autograd import Variable
+from util.one_hot_for_test import one_hot
 
-def Generate_Image(dataloader, pose_code, Nz, G_model, args):
+def Generate_Image(dataloader,Nz, G_model, args):
     """
     Generate_Image with learned Generator
 
@@ -55,6 +56,7 @@ def Generate_Image(dataloader, pose_code, Nz, G_model, args):
             batch_pose_label = batch_pose_label.long()
             batch_pose_label = batch_pose_label.cuda()
             minibatch_size = len(batch_image)
+            batch_pose_code = one_hot(minibatch_size, 13)
 
             fixed_noise = torch.FloatTensor(np.random.uniform(-1,1, (minibatch_size, Nz)))
 
@@ -67,15 +69,15 @@ def Generate_Image(dataloader, pose_code, Nz, G_model, args):
 
             # Generatorでイメージ生成
             generated = G_model(batch_image, batch_pose_code, fixed_noise)
-            features.append(G_model.features)
+            # features.append(G_model.features)
 
             # バッチ毎に生成したイメージを
             for j in range(minibatch_size):
                 save_generated_image = generated[j].cpu().data.numpy().transpose(1, 2, 0)
                 save_generated_image = np.squeeze(save_generated_image)
-                save_generated_image = (save_generated_image+1)/2.0 * 255.
-                save_generated_image = save_generated_image[:,:,[2,1,0]] # convert from BGR to RGB
-                save_dir = '{}_generated'.format(args.snapshot)
+                save_generated_image = save_generated_image * 255.0
+                # save_generated_image = save_generated_image[:,:,[2,1,0]] # convert from BGR to RGB
+                save_dir = '{}_generated'.format(args.testop)
                 filename = os.path.join(save_dir, '{}.jpg'.format(str(image_number)))
                 if not os.path.isdir(save_dir): os.makedirs(save_dir)
                 print('saving {}'.format(filename))
