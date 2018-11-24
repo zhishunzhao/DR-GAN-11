@@ -15,6 +15,7 @@ from train_single_DRGAN import train_single_DRGAN
 from train_multiple_DRGAN import train_multiple_DRGAN
 from Generate_Image import Generate_Image
 from util.Multipie_loader import get_loader
+from util.pose_dict import POSE_DICT
 import pdb
 
 
@@ -74,7 +75,7 @@ if __name__=="__main__":
     # option
     parser.add_argument('-snapshot', type=str, default=None, help='filename of model snapshot(snapshot/{Single or Multiple}/{date}/{epoch}) [default: None]')
     parser.add_argument('-generate', action='store_true', default=None, help='Generate pose modified image from given image')
-    parser.add_argument('-testop', type=str, default='./test', help='test_dir')
+    parser.add_argument('-test-output', type=str, default='./test_output', help='test_dir')
 
     args = parser.parse_args()
 
@@ -101,9 +102,7 @@ if __name__=="__main__":
         print('n\Loading data from [%s]...' % args.data_place)
 
         Nd, Np, Nz, channel_num = DataLoader()
-        pose_dict = {'110': 1, '120': 2, '090': 3, '080': 4, '130': 5, '140': 6, '051': 7, '050': 8, '041': 9,
-                         '190': 10, '200': 11, '010': 12, '240': 13}
-
+        pose_dict = POSE_DICT
         dataloader = get_loader(image_dir='/home/home_data/jason/DR-GAN-11/test', Np=13, Nd=250,pose_dict=pose_dict, image_size=110, batch_size=args.batch_size, mode='train',
                                 num_workers=1)
         # print('test')
@@ -141,8 +140,6 @@ if __name__=="__main__":
                 print("Please give valid combination of batch_size, images_perID")
                 exit()
     else:
-        # pose_code = [] # specify arbitrary pose code for every image
-        # pose_code = np.random.uniform(-1,1, (images.shape[0], Np))
-        # pose_code = [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0]
-        # pose_code = torch.FloatTensor(pose_code)
-        Generate_Image(dataloader, Nz, G, args)
+
+        image_dir = '/home/home_data/jason/DR-GAN-11/test'
+        Generate_Image(image_dir, Nz, Np, G, args)
