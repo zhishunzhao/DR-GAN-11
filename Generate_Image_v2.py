@@ -31,8 +31,8 @@ def Generate_Image(test_dir, pose_code, Nz, G_model, args):
 
 
             totensor = T.ToTensor()
-            im_data = totensor(im)
-            im_data = np.expand_dims(im_data, axis=0)
+            im_data = totensor(im).unsqueeze(0)
+            # im_data = np.expand_dims(im_data, axis=0)
 
             generated = G_model(im_data, pose_code, fixed_noise)
             save_generated_image = generated.cpu().data_numpy().transpose(1, 2, 0)
